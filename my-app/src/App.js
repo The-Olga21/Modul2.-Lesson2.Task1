@@ -17,21 +17,14 @@ export const App = () => {
 		}
 	};
 
-	const errorMessage = <div className={styles.error}>{error} </div>;
-
-	let isValueVaild;
-	if (value.length < 3) {
-		isValueVaild = false;
-	} else {
-		isValueVaild = true;
-	}
+	const isValueVaild = value.length >= 3;
 
 	const onAddButtonClick = () => {
 		if (value.length >= 3) {
 			const updatedList = [...list, { id: Date.now(), value: value }];
 			setList(updatedList);
-			value = '';
-			error = '';
+			setValue('');
+			setError('');
 			console.log(updatedList);
 		}
 	};
@@ -43,7 +36,7 @@ export const App = () => {
 				Текущее значение <code>value</code>: "
 				<output className={styles['current-value']}>{value}</output>"
 			</p>
-			{error && errorMessage}
+			{error && <div className={styles.error}>{error} </div>}
 			<div className={styles['buttons-container']}>
 				<button className={styles.button} onClick={onInputButtonClick}>
 					Ввести новое
@@ -58,16 +51,17 @@ export const App = () => {
 			</div>
 			<div className={styles['list-container']}>
 				<h2 className={styles['list-heading']}>Список:</h2>
-				<p className={styles['no-margin-text']}>
-					{list.length > 0 ? '' : 'Нет добавленных элементов'}
-				</p>
-				<ul className={styles.list}>
-					{list.map(({ id, value }) => (
-						<li className={styles['list-item']} key={id}>
-							{value + ' ' + new Date().toLocaleString('ru-RU')}
-						</li>
-					))}
-				</ul>
+				{list.length > 0 ? (
+					<ul className={styles.list}>
+						{list.map(({ id, value }) => (
+							<li className={styles['list-item']} key={id}>
+								{value + ' ' + new Date().toLocaleString('ru-RU')}
+							</li>
+						))}
+					</ul>
+				) : (
+					<p className={styles['no-margin-text']}>Нет добавленных элементов</p>
+				)}
 			</div>
 		</div>
 	);
